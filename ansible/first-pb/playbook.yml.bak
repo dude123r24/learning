@@ -1,0 +1,25 @@
+---
+name: install and start apache
+hosts: hosts.yml
+remote_user: root
+
+tasks : 
+- name : create directory
+  file :
+      path :/home/amit
+      state : directory
+
+- name: Make a backup of /etc/hosts
+  remote_src: /etc/hosts
+  dest: /etc/hosts.bak
+
+- name: Add mappings to /etc/hosts
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      {{ item.ip }} {{ item.name }}
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+  loop:
+    - { name: ip-172-31-23-28.us-west-2.compute.internal, ip: 54.245.27.6 }
+    - { name: host3, ip: 10.10.1.12 }
+- 

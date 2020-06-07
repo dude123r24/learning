@@ -1,0 +1,38 @@
+---
+- name: Prepare AWS server to act as jenkins build server
+  gather_facts: False
+  hosts: aws
+  remote_user: ec2-user
+  become: yes
+
+  tasks:
+  - name: create directory - just to prove connectivity works
+    file:
+      path: /tmp/amit
+      state: directory
+
+  - name: upgrade all packages
+    yum:
+      name: '*'
+      state: latest
+
+#  - name: Get Jenkins Repo
+#    shell: wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo ; rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+
+  - name: Get Jenkins Repo Script - Get repo and import key
+    script: jenkins_repo.sh
+
+
+  - name: install packages - Jenkins, java, git
+    yum: 
+      name: "{{ packages }}"
+    vars:
+      packages:
+        - java-1.8.0-openjdk
+        - jenkins
+        - git
+ 
+  - name: start jenkins
+    service: 
+      name: jenkins
+      state: started

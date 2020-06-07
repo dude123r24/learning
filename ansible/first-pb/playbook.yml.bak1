@@ -1,0 +1,46 @@
+---
+- name: install and start apache
+  gather_facts: False
+  hosts: aws
+  remote_user: ec2-user
+  become: yes
+
+  tasks:
+  - name: create directory
+    file:
+      path: /tmp/amit
+      state: directory
+
+  - name: upgrade all packages
+    yum:
+      name: '*'
+      state: latest
+
+  - name: Make a backup of hosts file
+    shell: wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+
+  - name: install httpd
+    yum: 
+      name: "{{ packages }}"
+    vars:
+      packages:
+        - httpd
+        - httpd-tools
+        - jenkins
+ 
+  - name: start httpd
+    service:
+      name: httpd
+      state: started
+
+  - name: Open port 80 for http access
+    firewalld:
+      service: http
+      permanent: true
+      state: enabled
+
+  - name: Restart the firewalld service to load in the firewall changes
+    service:
+      name: firewalld
+      state: restarted
+
