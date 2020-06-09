@@ -1,0 +1,46 @@
+#!/usr/local/bin/python3
+print ("Hello World")
+
+# Using while and if, Print Odd Numbers, except 7 and exit if its 11
+i=0
+while i<15:
+    if i % 2 == 0:
+        pass
+    elif i == 7:
+        i += 1 # if we dont have it here, the loop will be stuck as i wont increment
+        continue
+    elif i == 11:
+        break
+    else:
+        print (f'Dont print: {i}')
+        print ('Loop No' , i)
+    i += 1
+# The value of i will exist and be 13 after the above loop finishes
+
+# for loop and lists
+
+colours = ['blue' , 'green' , 'red']
+for colour in colours:
+    print (f"My colour is: {colour}")
+    print ("My colour is " + colour + ". And i like it a lot")
+    print ("colour")
+
+# Lists can be changed. Can be indexed. So can tuples
+# list is colours = ['blue' , 'green' , 'red']
+# tuple is point = (2.1, 3.2, 4.6)
+# list of tuples is list_of_points = [(1,2), (2,5) , (4,2)]
+# dict (is like list of tuples) is ages = {'amit':43, 'bob':22, 'kayla':54}
+for key in ages:
+    print(key)
+# or
+for (name, age) in ages.items():
+    print (f"Person: {name}. Age: {age}")
+
+for i in 'amit':
+    print (i)
+
+list_of_points = [(1,2), (2,5) , (4,2)]
+for (x,y) in list_of_points:
+    print (str(x) + " and " + str(y))
+    print (f"x={x} and y={y}")
+    print (x*y)
