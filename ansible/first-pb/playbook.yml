@@ -10,6 +10,8 @@
     file:
       path: /tmp/amit
       state: directory
+    tags:
+      - create_dir
 
   - name: upgrade all packages
     yum:
@@ -37,3 +39,28 @@
     service: 
       name: jenkins
       state: started
+
+  - name: create multiple files from a location
+    file:
+      path: ‘/tmp/{{ item }}’
+      state: touch
+    loop:
+      - file1
+      - file2
+    tags: create_file
+  
+  - name: delete multiple files from a locatoion
+    file:
+      path: ‘/tmp/{{ item }}’
+      state: absent
+    loop:
+      - file1
+      - file2
+    tags: delete_file
+      
+  - name: be sure ntpd is running and enabled
+    service:
+      name: ntpd
+      state: started
+      enabled: yes
+    tags: ntp
